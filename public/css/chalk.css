@@ -1,0 +1,49 @@
+.back {
+  border-left: 1px solid #ff9805;
+}
+
+a:hover, a:active {
+  background-color: #ff9805;
+}
+
+a {
+  background-color: #ffbf37;
+}
+
+h1, h2 {
+  color: #ff9805;
+}
+
+button {
+  background-color: #ff9805;
+}
+
+input, textarea {
+  border: 1px solid #ff9805;
+}
+
+section ul.actions li {
+  border-left: 1px solid #ff9805;
+  border-top: 1px solid #ff9805;
+  border-bottom: 1px solid #ff9805;
+}
+
+#users li {
+  border-top: 1px solid #ff9805;
+  border-bottom: 1px solid #ff9805;
+}
+
+#chat {
+  border: 1px solid #ff9805;
+}
+
+article {
+  border-top: 1px solid #ff9805;
+}
+
+@media only screen and (max-width: 719px) {
+
+  #users li {
+    border-left: 1px solid #ff9805;
+  }
+}
