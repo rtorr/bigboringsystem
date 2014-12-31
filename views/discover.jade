@@ -6,12 +6,12 @@ block content
   #posts
     for post in posts
       article
+        time
+          a(href='/post/#{post.key}', class="small")= post.value.created
         if post.value.title
-          p
-            a(href='#{post.value.reply}')= post.value.title
+          a(href='#{post.value.reply}', target="_blank")= post.value.title
         else
-          p
-            a(href='#{post.value.reply}')= post.value.reply
+          a(href='#{post.value.reply}', target="_blank")= post.value.reply
 
     .pagination
       if next && lastKey
