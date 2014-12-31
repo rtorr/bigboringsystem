@@ -1,7 +1,7 @@
 doctype html
 html
   head
-    title big boring system
+    title Chalk Fish
     meta(charset='utf-8')
     meta(content='width=device-width, height=device-height, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0', name='viewport')
     meta(content='yes', name='apple-mobile-web-app-capable')
@@ -14,16 +14,16 @@ html
     .back
     header
       p
-        a(href='/') b.b.s.
+        a(href='/') Chalk Fish
 
     .wrapper.cf
       section
         ul.actions
           if session
             li
-              a(href='/posts') my posts
+              a(href='/posts') my links
             li
-              a(href='/chat') chat
+              a(href='http://bigboringsystem.com/chat', target='_blank') chat
             li
               a(href='/discover') discover
             li
@@ -43,9 +43,6 @@ html
                 p.error= error
               input(type='hidden', name='crumb', value='#{crumb}')
               button(type='submit') send my PIN
-
-    script(type='text/javascript', src='https://cdn.socket.io/socket.io-1.2.1.js')
-    script(type='text/javascript', src='/js/global.js')
 
     block scripts
 

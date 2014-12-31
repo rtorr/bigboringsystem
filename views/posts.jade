@@ -1,13 +1,13 @@
 extend layout
 
 block content
-  h1 my posts
+  h1 my links
 
   form(method='post', action='/post')
-    label(for='reply') reply links to previous posts? (space delimited)
+    label(for='reply') Title
+      input(type='text', name='title')
+    label(for='reply') Url
       input(type='text', name='reply')
-    label(for='content') content
-      textarea(rows='10', cols='90', name='content')
     if error
       p.error= error
     input(type='hidden', name='crumb', value='#{crumb}')
@@ -16,12 +16,11 @@ block content
   #posts
     for post in posts
       article
-        time
-          a(href='/post/#{post.key}')= post.value.created
-        if post.value.reply
-          p.reply in reply to:&#xa0;
-            != post.value.reply
-        pre!= post.value.content
+        if post.value.title
+          a(href='#{post.value.reply}')= post.value.title
+        else
+          a(href='#{post.value.reply}')= post.value.reply
+
     .pagination
       if next && lastKey
         a(href='/posts?last=#{lastKey}') older

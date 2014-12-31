@@ -15,9 +15,6 @@ auth.setDB();
 var posts = require('./lib/posts');
 var utils = require('./lib/utils');
 
-var chatUsers = {};
-var chatUserCount = 0;
-
 nconf.argv().env().file({ file: 'local.json' });
 
 var server = new Hapi.Server();
@@ -73,11 +70,6 @@ var routes = [
     method: 'GET',
     path: '/posts',
     handler: posts.getRecent
-  },
-  {
-    method: 'GET',
-    path: '/chat',
-    handler: services.chat
   },
   {
     method: 'GET',
@@ -232,14 +224,14 @@ server.route({
 server.ext('onPreResponse', function (request, reply) {
   var response = request.response;
   if (!response.isBoom) {
-    if (['/profile', '/messages', '/chat', '/posts', '/links', '/users',
+    if (['/profile', '/messages', '/posts', '/links', '/users',
          '/deleteaccount', '/post'].indexOf(request.path) > -1) {
       if (!request.session.get('uid')) {
         return reply.redirect('/');
       }
     }
 
-    if (['/', '/messages', '/chat', '/posts', '/discover', '/links',
+    if (['/', '/messages', '/posts', '/discover', '/links',
          '/users', '/ban', '/unban', '/deleteaccount', '/post'].indexOf(request.path) > -1) {
       if (request.session.get('uid') && !request.session.get('name')) {
         return reply.redirect('/profile');
@@ -302,50 +294,7 @@ server.register({
 }, function (err) { });
 
 server.start(function () {
-  var io = SocketIO.listen(server.listener);
 
-  io.on('connection', function (socket) {
-    console.log('connected to local socket');
-
-    socket.on('user', function (user) {
-      if (socket.user || socket.uid) {
-        return;
-      }
-      console.log('user connected ', user)
-      socket.user = user.name;
-      socket.uid = user.uid;
-      chatUsers[user.uid] = user.name;
-      chatUserCount ++;
-
-      io.emit('users', chatUsers);
-    });
-
-    socket.on('disconnect', function () {
-      console.log('disconnected')
-      delete chatUsers[socket.uid];
-      chatUserCount --;
-
-      if (chatUserCount < 0) {
-        chatUserCount = 0;
-      }
-
-      socket.broadcast.emit('users', chatUsers);
-    });
-
-    socket.on('message', function (data) {
-      if (socket.user && data.trim().length > 0) {
-        io.emit('message', {
-          name: socket.user,
-          uid: socket.uid,
-          timestamp: (new Date()).toISOString(),
-          message: utils.autoLink(data, {
-            htmlEscapeNonEntities: true,
-            targetBlank: true
-          })
-        });
-      }
-    });
-  });
 });
 
 exports.getServer = function () {
