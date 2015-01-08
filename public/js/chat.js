@@ -86,7 +86,7 @@
   };
 
   var chatMessageCounter = function ( value ){
-    var maxMessageLength = 140;
+    var maxMessageLength = 200;
     var counter = document.getElementById('counter');
     counter.innerHTML = (maxMessageLength - value).toString();
   };
