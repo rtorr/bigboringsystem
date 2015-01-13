@@ -25,6 +25,7 @@
     "crumb": "~4.0.0",
     "csv-write-stream": "^0.3.0",
     "hapi": "~8.0.0",
+    "hapi-cache-buster": "^0.3.0",
     "hoek": "^2.11.0",
     "iron": "^2.1.2",
     "jade": "~1.8.1",

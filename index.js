@@ -341,10 +341,13 @@ var options = {
   }
 };
 
-server.register({
+server.register([{
   register: require('yar'),
   options: options
-}, function (err) { });
+}, {
+  register: require('hapi-cache-buster'),
+  options: new Date().getTime().toString()
+}], function (err) { });
 
 server.start(function (err) {
 
