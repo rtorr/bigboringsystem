@@ -371,14 +371,21 @@ server.start(function (err) {
         if (err || !session._store) return;
 
         var user = session._store;
-        console.log('user connected ', user)
-        socket.user = user.name;
-        socket.uid = user.uid;
-        chatUsers[user.uid] = user.name;
-        chatUserCount ++;
 
-        io.emit('users', chatUsers);
-        socket.emit('name', user.name);
+        profile.get(user.phone, function (err) {
+          if (err) {
+            return;
+          }
+
+          console.log('user connected ', user)
+          socket.user = user.name;
+          socket.uid = user.uid;
+          chatUsers[user.uid] = user.name;
+          chatUserCount ++;
+
+          io.emit('users', chatUsers);
+          socket.emit('name', user.name);
+        });
       });
     });
 
