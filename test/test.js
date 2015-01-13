@@ -113,8 +113,30 @@ lab.test('successful authentication by phone number generates a PIN', function (
     saveCookies(response);
 
     Code.expect(response.statusCode).to.equal(302);
-    // Code.expect(response.headers.location).to.equal('/authenticate');
+    Code.expect(response.headers.location).to.equal('/authenticate');
+    done();
+  });
+});
+
+lab.test('successful authentication by new phone number is disabled', function (done) {
+  conf.set('disableSignups', true);
+  var options = {
+    method: 'POST',
+    url: 'http://' + HOST + '/login?disable=true',
+    headers: {
+      cookie: cookieHeader()
+    },
+    payload: {
+      phone: fixtures.secondPhone
+    }
+  };
+
+  server.inject(options, function (response) {
+    saveCookies(response);
+
+    Code.expect(response.statusCode).to.equal(302);
     Code.expect(response.headers.location).to.equal('/no_new_accounts');
+    conf.set('disableSignups', false);
     done();
   });
 });
@@ -135,8 +157,7 @@ lab.test('unsuccessful authentication by multiple login attempts', function (don
       Code.expect(response.statusCode).to.equal(302);
 
       if (count <= 3) {
-        // Code.expect(response.headers.location).to.equal('/authenticate');
-        Code.expect(response.headers.location).to.equal('/no_new_accounts');
+        Code.expect(response.headers.location).to.equal('/authenticate');
         postLogin();
         count ++;
       } else {
@@ -448,8 +469,6 @@ lab.test('verify authorized user can reply to post', function (done) {
   });
 });
 
-
-
 lab.test('verify post on /discover', function (done) {
   var options = {
     method: 'GET',
@@ -484,7 +503,6 @@ lab.test('make sure rss is xml', function (done) {
 });
 
 lab.test('make sure posts make it to rss', function (done) {
-
   var options = {
     method: 'GET',
     url: '/rss',
