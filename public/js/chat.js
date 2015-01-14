@@ -32,7 +32,10 @@
     // highlight a username's own name in any message
     var message = data.message;
     if (name) {
-      var regexName = new RegExp(name, 'i');
+      /* Match names that are surrounded on either side by either the
+         beginning of the line, whitespace, or the end of a line. Colons
+         are allowed after the name on account of autocomplete */
+      var regexName = new RegExp('(^|\\s)' + name + ':?($|\\s)', 'g');
 
       // syntactic sugar to use the matched string as the highlighted name, not the sanitized name
       message = message.replace(regexName, '<span class=\"highlight\">$&</span>');
