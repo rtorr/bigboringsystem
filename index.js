@@ -425,8 +425,8 @@ server.start(function (err) {
           });
         }
       });
-    });
-  } catch (err) { }
+    } catch (err) { }
+  });
 });
 
 exports.getServer = function () {
