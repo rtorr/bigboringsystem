@@ -361,70 +361,72 @@ server.start(function (err) {
   var io = SocketIO.listen(server.listener);
 
   io.on('connection', function (socket) {
-    var cookies = cookie.parse(socket.request.headers.cookie);
+    try {
+      var cookies = cookie.parse(socket.request.headers.cookie);
 
-    console.log('connected to local socket');
+      console.log('connected to local socket');
 
-    socket.on('user', function () {
-      if (socket.user || socket.uid || !cookies.session) {
-        return;
-      }
+      socket.on('user', function () {
+        if (socket.user || socket.uid || !cookies.session) {
+          return;
+        }
 
-      Iron.unseal(cookies.session, conf.get('cookie'), Iron.defaults, function (err, session) {
-        if (err || !session._store) return;
+        Iron.unseal(cookies.session, conf.get('cookie'), Iron.defaults, function (err, session) {
+          if (err || !session._store) return;
 
-        var user = session._store;
+          var user = session._store;
 
-        profile.get(user.phone, function (err) {
-          if (err) {
-            return;
-          }
+          profile.get(user.phone, function (err) {
+            if (err) {
+              return;
+            }
 
-          console.log('user connected ', user)
-          socket.user = user.name;
-          socket.uid = user.uid;
-          chatUsers[user.uid] = user.name;
-          chatUserCount ++;
+            console.log('user connected ', user)
+            socket.user = user.name;
+            socket.uid = user.uid;
+            chatUsers[user.uid] = user.name;
+            chatUserCount ++;
 
-          io.emit('users', chatUsers);
-          socket.emit('name', user.name);
+            io.emit('users', chatUsers);
+            socket.emit('name', user.name);
+          });
         });
       });
+
+      socket.on('disconnect', function () {
+        console.log('disconnected')
+
+        var userStillConnected = io.sockets.sockets.reduce(function(memo, sock) {
+          return memo || sock.uid === socket.uid;
+        }, false);
+        if (!userStillConnected) {
+          delete chatUsers[socket.uid];
+        }
+
+        chatUserCount --;
+        if (chatUserCount < 0) {
+          chatUserCount = 0;
+        }
+
+        socket.broadcast.emit('users', chatUsers);
+      });
+
+      socket.on('message', function (data) {
+        var messageLength = data.trim().length;
+        if (socket.user && messageLength > 0 && messageLength < 251) {
+          io.emit('message', {
+            name: socket.user,
+            uid: socket.uid,
+            timestamp: (new Date()).toISOString(),
+            message: utils.autoLink(data, {
+              htmlEscapeNonEntities: true,
+              targetBlank: true
+            })
+          });
+        }
+      });
     });
-
-    socket.on('disconnect', function () {
-      console.log('disconnected')
-
-      var userStillConnected = io.sockets.sockets.reduce(function(memo, sock) {
-        return memo || sock.uid === socket.uid;
-      }, false);
-      if (!userStillConnected) {
-        delete chatUsers[socket.uid];
-      }
-
-      chatUserCount --;
-      if (chatUserCount < 0) {
-        chatUserCount = 0;
-      }
-
-      socket.broadcast.emit('users', chatUsers);
-    });
-
-    socket.on('message', function (data) {
-      var messageLength = data.trim().length;
-      if (socket.user && messageLength > 0 && messageLength < 251) {
-        io.emit('message', {
-          name: socket.user,
-          uid: socket.uid,
-          timestamp: (new Date()).toISOString(),
-          message: utils.autoLink(data, {
-            htmlEscapeNonEntities: true,
-            targetBlank: true
-          })
-        });
-      }
-    });
-  });
+  } catch (err) { }
 });
 
 exports.getServer = function () {
