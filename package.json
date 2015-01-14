@@ -47,7 +47,7 @@
     "lab": "~5.1.1",
     "nodemon": "~1.2.1",
     "rimraf": "^2.2.8",
-    "stylus": "LearnBoost/stylus#d1702c9e8f68c69f9540acdf043d0131a5b852f8"
+    "stylus": "LearnBoost/stylus#7bc13e1b566a9ac2a717a2b6f9cc188855277fdf"
   },
   "repository": {
     "type": "git",
