@@ -28,7 +28,10 @@ block content
             input(type='hidden', name='uid', value='#{post.uid}')
             input(type='hidden', name='crumb', value='#{crumb}')
             button(type='submit') X
-        a(href='/post/post!#{reply.postid}')= reply.created
+
+        a.time(href='/post/post!#{reply.postid}')
+          time(datetime='#{reply.created}')= reply.created
+
         = ' - '
         a(href='/user/#{reply.uid}')!= reply.name
         br
