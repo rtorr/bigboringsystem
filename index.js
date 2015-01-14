@@ -378,6 +378,8 @@ server.start(function (err) {
 
           profile.get(user.phone, function (err) {
             if (err) {
+              delete chatUsers[user.uid];
+              chatUserCount --;
               return;
             }
 
