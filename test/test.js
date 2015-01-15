@@ -312,6 +312,46 @@ lab.test('create new post with session and name', function (done) {
   });
 });
 
+lab.test('mute a user', function (done) {
+  var options = {
+    method: 'POST',
+    url: 'http://' + HOST + '/mute',
+    headers: {
+      cookie: cookieHeader()
+    },
+    payload: {
+      uid: '111'
+    }
+  };
+
+  server.inject(options, function (response) {
+    saveCookies(response);
+    Code.expect(response.statusCode).to.equal(302);
+    Code.expect(response.headers.location).to.equal('/user/111');
+    done();
+  });
+});
+
+lab.test('unmute a user', function (done) {
+  var options = {
+    method: 'POST',
+    url: 'http://' + HOST + '/mute',
+    headers: {
+      cookie: cookieHeader()
+    },
+    payload: {
+      uid: '111'
+    }
+  };
+
+  server.inject(options, function (response) {
+    saveCookies(response);
+    Code.expect(response.statusCode).to.equal(302);
+    Code.expect(response.headers.location).to.equal('/user/111');
+    done();
+  });
+});
+
 var uid, post, noreplypost, replypost;
 var getArticle = function (payload, snippet) {
   payload = payload.replace(/\n/g, ' ');

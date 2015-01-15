@@ -23,6 +23,18 @@ block content
         input(type='hidden', name='crumb', value='#{crumb}')
         button.unban(type='submit') unban this account
 
+  if session && (uid !== session)
+    if muted
+      form(method='post', action='/unmute')
+        input(type='hidden', name='uid', value='#{uid}')
+        input(type='hidden', name='crumb', value='#{crumb}')
+        button.unban(type='submit') unmute
+    else
+      form(method='post', action='/mute')
+        input(type='hidden', name='uid', value='#{uid}')
+        input(type='hidden', name='crumb', value='#{crumb}')
+        button.unban(type='submit') mute
+
   h2 websites
   ul.websites
     li!= websites

@@ -12,6 +12,7 @@ var Iron = require('iron');
 var services = require('./lib/services');
 var profile = require('./lib/profile');
 var auth = require('./lib/auth');
+var mute = require('./lib/mute');
 
 var posts = require('./lib/posts');
 var utils = require('./lib/utils');
@@ -243,6 +244,16 @@ var routes = [
     method: 'GET',
     path: '/no_new_accounts',
     handler: services.noNewAccounts
+  },
+  {
+    method: 'POST',
+    path: '/mute',
+    handler: mute.set
+  },
+  {
+    method: 'POST',
+    path: '/unmute',
+    handler: mute.unset
   }
 ];
 
