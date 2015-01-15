@@ -114,7 +114,7 @@
 
     for (var user in data) {
       var li = document.createElement('li');
-      var userItem = '<a href="/user/' + user + '" target="_blank">' + data[user] + '</a>';
+      var userItem = '<a href="/user/' + user + '" target="_blank"' + 'title="' + data[user] + '">' + data[user] + '</a>';
       li.innerHTML = userItem;
       userList.appendChild(li);
     }
