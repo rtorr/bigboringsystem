@@ -5,6 +5,7 @@
   var socket = io();
   var count = 0;
   var getChatSessionStorage = window.sessionStorage.getItem('chat');
+  var muted = JSON.parse(window.sessionStorage.getItem('muted'));
   var chatEl = document.getElementById('chat');
   var name = '';
 
@@ -17,43 +18,45 @@
   };
 
   var setChatMessage = function (data) {
-    var p = document.createElement('p');
+    if (!muted[data.uid]) {
+      var p = document.createElement('p');
 
-    var time;
-    if (data.timestamp) {
-      var date = new Date(data.timestamp);
-      var hours = formatTime(date.getHours());
-      var minutes = formatTime(date.getMinutes());
-      var seconds = formatTime(date.getSeconds());
+      var time;
+      if (data.timestamp) {
+        var date = new Date(data.timestamp);
+        var hours = formatTime(date.getHours());
+        var minutes = formatTime(date.getMinutes());
+        var seconds = formatTime(date.getSeconds());
 
-      time = '[' + hours + ':' + minutes + ':' + seconds + '] ';
-    }
+        time = '[' + hours + ':' + minutes + ':' + seconds + '] ';
+      }
 
-    // highlight a username's own name in any message
-    var message = data.message;
-    if (name) {
-      /* Match names that are surrounded on either side by either the
-         beginning of the line, whitespace, or the end of a line. Colons
-         are allowed after the name on account of autocomplete */
-      var regexName = new RegExp('(^|\\s)' + name + ':?($|\\s)', 'g');
+      // highlight a username's own name in any message
+      var message = data.message;
+      if (name) {
+        /* Match names that are surrounded on either side by either the
+           beginning of the line, whitespace, or the end of a line. Colons
+           are allowed after the name on account of autocomplete */
+        var regexName = new RegExp('(^|\\s)' + name + ':?($|\\s)', 'g');
 
-      // syntactic sugar to use the matched string as the highlighted name, not the sanitized name
-      message = message.replace(regexName, '<span class=\"highlight\">$&</span>');
-    }
+        // syntactic sugar to use the matched string as the highlighted name, not the sanitized name
+        message = message.replace(regexName, '<span class=\"highlight\">$&</span>');
+      }
 
-    p.innerHTML = '<span class="timestamp">' + (time ? time : '') + '</span>' + '<strong>' + data.name + '</strong>' + ': ' + message;
+      p.innerHTML = '<span class="timestamp">' + (time ? time : '') + '</span>' + '<strong>' + data.name + '</strong>' + ': ' + message;
 
-    var shouldScroll = (chatEl.scrollHeight - chatEl.scrollTop === chatEl.clientHeight);
-    chatEl.appendChild(p);
+      var shouldScroll = (chatEl.scrollHeight - chatEl.scrollTop === chatEl.clientHeight);
+      chatEl.appendChild(p);
 
-    if (shouldScroll) {
-      p.scrollIntoView();
-    }
-    count++;
+      if (shouldScroll) {
+        p.scrollIntoView();
+      }
+      count++;
 
-    if (count > 100) {
-      chatEl.removeChild(chatEl.getElementsByTagName('p')[0]);
-      count--;
+      if (count > 100) {
+        chatEl.removeChild(chatEl.getElementsByTagName('p')[0]);
+        count--;
+      }
     }
   };
 
@@ -113,10 +116,12 @@
     userList.innerHTML = '';
 
     for (var user in data) {
-      var li = document.createElement('li');
-      var userItem = '<a href="/user/' + user + '" target="_blank"' + 'title="' + data[user] + '">' + data[user] + '</a>';
-      li.innerHTML = userItem;
-      userList.appendChild(li);
+      if (!muted[user]) {
+        var li = document.createElement('li');
+        var userItem = '<a href="/user/' + user + '" target="_blank"' + 'title="' + data[user] + '">' + data[user] + '</a>';
+        li.innerHTML = userItem;
+        userList.appendChild(li);
+      }
     }
   });
 
