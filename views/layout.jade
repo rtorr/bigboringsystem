@@ -29,9 +29,10 @@ html
               a(href='/discover') discover
             li
               a(href='/links') more
-          if session
-            #auth
-              a(href='/logout') log out
+            block tips
+        if session
+          #auth
+            a(href='/logout') log out
       .content
         block content
         block login
