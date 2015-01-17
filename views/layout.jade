@@ -37,6 +37,7 @@ html
         block content
         block login
           if !session
+            h2 enter your phone number to sign in
             form(method='post', action='/login')
               if (process.env.npm_lifecycle_event === 'dev')
                 p Development Mode: Enter any valid phone number (no text will be sent)
