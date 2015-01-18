@@ -1,6 +1,6 @@
 /*global __dirname, process*/
 'use strict';
-
+require('node-jsx').install();
 var Hapi = require('hapi');
 var conf = require('./lib/conf');
 var Joi = require('joi');
@@ -10,7 +10,7 @@ var cookie = require('cookie');
 var Iron = require('iron');
 var path = require('path');
 
-var services = require('./lib/services');
+var services = require('./lib/r_services');
 var profile = require('./lib/profile');
 var auth = require('./lib/auth');
 var mute = require('./lib/mute');

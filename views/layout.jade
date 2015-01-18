@@ -8,54 +8,16 @@ html
     link(rel='stylesheet', href='//brick.a.ssl.fastly.net/Inconsolata:500')
     link(rel='stylesheet', href='/css/bundle.min.css' + version.cache)
     link(rel='alternate', href='/rss', type='application/atom+xml', title='Big Boring Feed')
+    - console.log(layout)
+    script.
+      var layoutData = !{JSON.stringify(layoutData)};
+      var layout = '#{layout}';
     if analytics
       != "<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', '" + analytics + "', 'auto');ga('send', 'pageview');</script>"
 
   body
     .back
-    header
-      p
-        a(href='/') b.b.s.
-
-    .wrapper.cf
-      section
-        ul.actions
-          if session
-            li
-              a(href='/posts') my posts
-            li
-              a(href='/chat') chat
-            li
-              a(href='/discover') discover
-            li
-              a(href='/links') more
-            block tips
-        if session
-          #auth
-            a(href='/logout') log out
-      .content
-        block content
-        block login
-          if !session
-            h2 enter your phone number to sign in
-            form(method='post', action='/login')
-              if (process.env.npm_lifecycle_event === 'dev')
-                p Development Mode: Enter any valid phone number (no text will be sent)
-              else
-                p Enter your number without spaces or dashes
-                p You may need to prepend with + for non-U.S/Canadian numbers
-              input(type='tel', name='phone', required)
-              if error
-                p.error= error
-              input(type='hidden', name='crumb', value='#{crumb}')
-              button(type='submit') send my PIN
-
-        block footer
-          .footer
-            p Powered by&#xa0;
-              a(href='http://digitalocean.com', target='_blank') DigitalOcean
-              | &#xa0;and&#xa0;
-              a(href='http://twilio.com', target='_blank') Twilio
+    block content
 
     script(type='text/javascript', src='https://cdn.socket.io/socket.io-1.2.1.js')
     script(type='text/javascript', src='/js/global.js' + version.cache)

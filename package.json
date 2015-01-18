@@ -26,7 +26,8 @@
         {
           "ext": ".js"
         }
-      ]
+      ],
+      ["envify"]
     ]
   },
   "dependencies": {
@@ -38,6 +39,7 @@
     "cookie": "^0.1.2",
     "crumb": "~4.0.0",
     "csv-write-stream": "^0.3.0",
+    "envify": "^3.2.0",
     "flux": "~2.0.1",
     "hapi": "~8.0.0",
     "hapi-cache-buster": "^0.3.0",
@@ -48,6 +50,7 @@
     "level": "~0.18.0",
     "level-ttl": "~2.1.1",
     "nconf": "~0.7.1",
+    "node-jsx": "^0.12.4",
     "queue": "^3.0.10",
     "react": "^0.12.1",
     "react-tools": "^0.12.1",
