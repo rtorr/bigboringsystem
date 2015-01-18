@@ -8,22 +8,37 @@
     "npm": "2.x.x"
   },
   "scripts": {
-    "start": "npm run watch-styles & nodemon index.js",
-    "dev": "npm run watch-styles & nodemon index.js",
+    "start": "npm run watch-styles & npm run build-js & nodemon index.js",
+    "dev": "npm run watch-styles & npm run watch-js & nodemon index.js",
     "build-styles": "stylus -c public/styl/main.styl -o public/css/bundle.min.css",
     "watch-styles": "stylus -c -w -m public/styl/main.styl -o public/css/bundle.min.css",
+    "build-js": "browserify ./public/js/main.js -o ./public/js/bundle.js",
+    "watch-js": "watchify ./public/js/main.js -o ./public/js/bundle.js",
     "test": "npm run lint -s && lab",
     "lint": "npm run lint-server && npm run lint-frontend",
     "lint-server": "eslint lib/",
     "lint-frontend": "eslint -c .eslintrc-frontend public/js"
   },
+  "browserify": {
+    "transform": [
+      [
+        "reactify",
+        {
+          "ext": ".js"
+        }
+      ]
+    ]
+  },
   "dependencies": {
     "accepts": "^1.2.2",
+    "amp-extend": "^1.0.1",
+    "amp-merge": "^1.0.0",
     "boom": "~2.6.1",
     "concat-stream": "~1.4.7",
     "cookie": "^0.1.2",
     "crumb": "~4.0.0",
     "csv-write-stream": "^0.3.0",
+    "flux": "~2.0.1",
     "hapi": "~8.0.0",
     "hapi-cache-buster": "^0.3.0",
     "hoek": "^2.11.0",
@@ -33,6 +48,9 @@
     "level": "~0.18.0",
     "level-ttl": "~2.1.1",
     "nconf": "~0.7.1",
+    "queue": "^3.0.10",
+    "react": "^0.12.1",
+    "react-tools": "^0.12.1",
     "rss": "~1.1.1",
     "socket.io": "~1.2.1",
     "twilio": "~1.10.0",
@@ -41,13 +59,16 @@
     "yar": "~3.0.3"
   },
   "devDependencies": {
+    "browserify": "^5.11.0",
     "code": "~1.2.1",
     "csv-parse": "0.0.6",
     "eslint": "^0.10.2",
     "lab": "~5.1.1",
     "nodemon": "~1.2.1",
+    "reactify": "^0.17.1",
     "rimraf": "^2.2.8",
-    "stylus": "LearnBoost/stylus#7bc13e1b566a9ac2a717a2b6f9cc188855277fdf"
+    "stylus": "LearnBoost/stylus#7bc13e1b566a9ac2a717a2b6f9cc188855277fdf",
+    "watchify": "^1.0.2"
   },
   "repository": {
     "type": "git",
