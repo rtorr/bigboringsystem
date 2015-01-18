@@ -2,6 +2,11 @@
   "env": {
     "node": true
   },
+  "ecmaFeatures": {
+    "blockBindings": true,
+    "forOf": true,
+    "jsx": true
+  },
   "rules": {
     "quotes": [2, "single"]
   }
