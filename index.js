@@ -1,13 +1,14 @@
+/*global __dirname, process*/
 'use strict';
 
 var Hapi = require('hapi');
 var conf = require('./lib/conf');
-var Boom = require('boom');
 var Joi = require('joi');
 var SocketIO = require('socket.io');
 var http = require('http');
 var cookie = require('cookie');
 var Iron = require('iron');
+var path = require('path');
 
 var services = require('./lib/services');
 var profile = require('./lib/profile');
@@ -23,9 +24,7 @@ var chatUserCount = 0;
 var server = new Hapi.Server();
 
 if (!conf.get('port')) {
-  console.error('\n\'port\' is a required local.json field');
-  console.error('If you don\'t have a local.json file set up, please copy local.json-dist and fill in your config info before trying again\n');
-  process.exit(1);
+  throw new Error('\n\'port\' is a required local.json field\n If you don\'t have a local.json file set up, please copy local.json-dist and fill in your config info before trying again\n');
 }
 
 server.connection({
@@ -38,7 +37,7 @@ server.views({
     jade: require('jade')
   },
   isCached: process.env.node === 'production',
-  path: __dirname + '/views',
+  path: path.join(__dirname, 'views'),
   compileOptions: {
     pretty: true
   }
@@ -358,13 +357,16 @@ server.register([{
 }, {
   register: require('hapi-cache-buster'),
   options: new Date().getTime().toString()
-}], function (err) { });
+}], function (err) {
+  if (err) {
+    throw new Error(err.message);
+  }
+});
 
 server.start(function (err) {
 
   if (err) {
-    console.error(err.message);
-    process.exit(1);
+    throw new Error(err.message);
   }
 
   console.log('\n  b.b.s. server running at ' + server.info.uri + '  \n');
@@ -383,22 +385,26 @@ server.start(function (err) {
         }
 
         Iron.unseal(cookies.session, conf.get('cookie'), Iron.defaults, function (err, session) {
-          if (err || !session._store) return;
+          /*eslint-disable*/
+          if (err || !session._store) {
+            return;
+          }
 
           var user = session._store;
+          /*eslint-enable*/
 
           profile.get(user.phone, function (err) {
             if (err) {
               delete chatUsers[user.uid];
-              chatUserCount --;
+              chatUserCount--;
               return;
             }
 
-            console.log('user connected ', user)
+            console.log('user connected ', user);
             socket.user = user.name;
             socket.uid = user.uid;
             chatUsers[user.uid] = user.name;
-            chatUserCount ++;
+            chatUserCount++;
 
             io.emit('users', chatUsers);
             socket.emit('name', user.name);
@@ -407,7 +413,7 @@ server.start(function (err) {
       });
 
       socket.on('disconnect', function () {
-        console.log('disconnected')
+        console.log('disconnected');
 
         var userStillConnected = io.sockets.sockets.reduce(function(memo, sock) {
           return memo || sock.uid === socket.uid;
@@ -416,7 +422,7 @@ server.start(function (err) {
           delete chatUsers[socket.uid];
         }
 
-        chatUserCount --;
+        chatUserCount--;
         if (chatUserCount < 0) {
           chatUserCount = 0;
         }

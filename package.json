@@ -11,7 +11,7 @@
     "start": "npm run watch-styles & npm run build-js & nodemon index.js",
     "dev": "npm run watch-styles & npm run watch-js & nodemon index.js",
     "build-styles": "stylus -c public/styl/main.styl -o public/css/bundle.min.css",
-    "watch-styles": "stylus -c -w -m public/styl/main.styl -o public/css/bundle.min.css",
+    "watch-styles": "stylus -c -w public/styl/main.styl -o public/css/bundle.min.css",
     "build-js": "browserify ./public/js/main.js -o ./public/js/bundle.js",
     "watch-js": "watchify ./public/js/main.js -o ./public/js/bundle.js",
     "test": "npm run lint -s && lab",
