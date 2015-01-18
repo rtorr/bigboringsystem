@@ -17,6 +17,18 @@
     return '0' + date;
   };
 
+  var htmlDecode = function (s) {
+    // http://stackoverflow.com/a/1912522/265455
+    var e = document.createElement('div');
+    e.innerHTML = s;
+    return e.childNodes.length === 0 ? '' : e.childNodes[0].nodeValue;
+  };
+
+  var escapeRegExCharacters = function (s) {
+    // Given a string escapes all characters that are RegEx operators with backslashes
+    return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+  };
+
   var setChatMessage = function (data) {
     if (!muted[data.uid]) {
       var p = document.createElement('p');
@@ -37,7 +49,8 @@
         /* Match names that are surrounded on either side by either the
            beginning of the line, whitespace, or the end of a line. Colons
            are allowed after the name on account of autocomplete */
-        var regexName = new RegExp('(^|\\s)' + name + ':?($|\\s)', 'g');
+
+        var regexName = new RegExp('(^|\\s)' + escapeRegExCharacters(htmlDecode(name)) + ':?($|\\s)', 'g');
 
         // syntactic sugar to use the matched string as the highlighted name, not the sanitized name
         message = message.replace(regexName, '<span class=\"highlight\">$&</span>');
