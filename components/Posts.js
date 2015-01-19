@@ -3,10 +3,15 @@
 var React = require('react');
 
 var Posts = React.createClass({
+  getDefaultProps: function() {
+    return {
+      replyto: global.replyto || ''
+    };
+  },
   render: function () {
     var postNodes = this.props.data.posts.map( function( post ) {
       return (
-        <article key={post.value.created.uuid}>
+        <article key={post.key}>
           <a className="time" href={'/post/post!' + post.value.postid}>
             <span dateTime={post.value.created}>{post.value.created}</span>
           </a>
@@ -22,7 +27,7 @@ var Posts = React.createClass({
         <h1>my posts</h1>
         <form method="post" action="/post">
           <label>{'reply links to previous posts? (space delimited)'}
-            <input id="reply-to" type="text" name="reply"/>
+            <input id="reply-to" type="text" name="reply" defaultValue={this.props.replyto}/>
           </label>
           <label>content
             <textarea rows="10" cols="90" name="content" required="true"></textarea>

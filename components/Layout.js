@@ -30,7 +30,7 @@ var Layout = React.createClass({
               <ul className="actions">
                 <li><a href="/posts">my posts</a></li>
                 <li><a href="/chat">chat</a></li>
-                <li><a href="/discover">Discoverd</a></li>
+                <li><a href="/discover">discover</a></li>
                 <li><a href="/links">more</a></li>
                 <li><a href="/logout">log out</a></li>
                 {this.props.tips ? this.props.tips : ''}
