@@ -27,7 +27,9 @@
           "ext": ".js"
         }
       ],
-      ["envify"]
+      [
+        "envify"
+      ]
     ]
   },
   "dependencies": {
@@ -53,6 +55,7 @@
     "node-jsx": "^0.12.4",
     "queue": "^3.0.10",
     "react": "^0.12.1",
+    "react-router": "^0.11.6",
     "react-tools": "^0.12.1",
     "rss": "~1.1.1",
     "socket.io": "~1.2.1",

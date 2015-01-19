@@ -1,9 +1,15 @@
 'use strict';
 
 var React = require('react');
+var Router = require('react-router');
 
 var Layout = React.createClass({
 
+  getDefaultProps: function() {
+    return {
+      data: global.layoutData
+    };
+  },
 
   handleSubmit: function(e){
     e.preventDefault();
@@ -11,6 +17,7 @@ var Layout = React.createClass({
   },
 
   render: function () {
+    var View = this.props.view ? this.props.view : Router.RouteHandler;
     return (
       <div>
         <header>
@@ -29,29 +36,10 @@ var Layout = React.createClass({
                 {this.props.tips ? this.props.tips : ''}
               </ul>
             </div>
-            : ''}
+            : <ul className="actions"></ul>}
           </section>
           <div className="content">
-            <this.props.view data={this.props.data} />
-            {this.props.login ? this.props.login : ''}
-            {this.props.data.session ?
-              <div>
-                <h2>enter your phone number to sign in</h2>
-                <form method="post" action="/login">
-                  {process.env.npm_lifecycle_event === 'dev' ?
-                    <p>Development Mode: Enter any valid phone number (no text will be sent)</p>
-                    :
-                    <div>
-                      <p>Enter your number without spaces or dashes</p>
-                      <p>You may need to prepend with + for non-U.S/Canadian numbers</p>
-                    </div>}
-                    <input type="tel" name="phone" required="true"/>
-                    {this.props.error ? <p>{this.props.error}</p> : ''}
-                    <input type="hidden" name="crumb" value={this.props.crumb} />
-                    <button type="submit">send my PIN</button>
-                </form>
-              </div>
-              : ''}
+            <View data={this.props.data} />
             <div className="footer">
               <p>Powered by&#xa0;<a href="https://github.com/bigboringsystem/bigboringsystem">B.B.S.</a></p>
             </div>

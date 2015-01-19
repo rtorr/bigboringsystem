@@ -4,20 +4,6 @@ var React = require('react');
 
 var Main = React.createClass({
 
-  propTypes: {
-    //scroll: React.PropTypes.bool
-  },
-
-  getInitialState: function () {
-    return {};
-  },
-
-  componentDidMount: function () {
-  },
-
-  componentWillUnmount: function () {
-  },
-
   render: function () {
 
     var houseRules = function() {
@@ -61,6 +47,24 @@ var Main = React.createClass({
           </article>
         </div>}
         {houseRules()}
+        {!this.props.data.session ?
+          <div>
+            <h2>enter your phone number to sign in</h2>
+            <form method="post" action="/login">
+            {process.env.npm_lifecycle_event === 'dev' || 'watch-js' ?
+              <p>Development Mode: Enter any valid phone number (no text will be sent)</p>
+              :
+              <div>
+                <p>Enter your number without spaces or dashes</p>
+                <p>You may need to prepend with + for non-U.S/Canadian numbers</p>
+              </div>}
+              <input type="tel" name="phone" required="true"/>
+              {this.props.error ? <p>{this.props.error}</p> : ''}
+              <input type="hidden" name="crumb" value={this.props.data.crumb} />
+              <button type="submit">send my PIN</button>
+            </form>
+          </div>
+          : ''}
       </div>
     );
   }
