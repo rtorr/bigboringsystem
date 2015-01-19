@@ -6,9 +6,12 @@
   "ecmaFeatures": {
     "blockBindings": true,
     "forOf": true,
-    "jsx": true
+    "jsx": true,
+    "nomen": true
   },
   "rules": {
-    "quotes": [2, "single"]
+    "quotes": [2, "single"],
+    "no-underscore-dangle": 0,
+    "no-unused-vars": 0
   }
 }

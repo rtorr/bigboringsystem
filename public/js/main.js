@@ -19,6 +19,7 @@ var Index = require('./../../components/Index');
 var Authenticate = require('./../../components/Authenticate');
 var Posts = require('./../../components/Posts');
 var Post = require('./../../components/Post');
+var Chat = require('./../../components/Chat');
 
 var routes = (
   <Router.Route handler={Layout} path="/">
@@ -26,6 +27,7 @@ var routes = (
     <Router.Route name="authenticate" handler={Authenticate} />
     <Router.Route name="posts" handler={Posts} />
     <Router.Route name="post" path="/post/:postId" handler={Post} />
+    <Router.Route name="chat" handler={Chat} />
   </Router.Route>
 );
 

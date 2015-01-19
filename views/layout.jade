@@ -8,7 +8,6 @@ html
     link(rel='stylesheet', href='//brick.a.ssl.fastly.net/Inconsolata:500')
     link(rel='stylesheet', href='/css/bundle.min.css' + version.cache)
     link(rel='alternate', href='/rss', type='application/atom+xml', title='Big Boring Feed')
-    - console.log(layout)
     script.
       var layoutData = !{JSON.stringify(layoutData)};
     if analytics
@@ -21,6 +20,7 @@ html
     script(type='text/javascript', src='https://cdn.socket.io/socket.io-1.2.1.js')
     script(type='text/javascript', src='/js/global.js' + version.cache)
     script(type='text/javascript', src='/js/bundle.js' + version.cache)
-
+    script.
+      window.sessionStorage.setItem('muted', '!{muted}');
     block scripts
 
