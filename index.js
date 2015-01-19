@@ -15,7 +15,7 @@ var profile = require('./lib/profile');
 var auth = require('./lib/auth');
 var mute = require('./lib/mute');
 
-var posts = require('./lib/posts');
+var posts = require('./lib/r_posts');
 var utils = require('./lib/utils');
 
 var chatUsers = {};

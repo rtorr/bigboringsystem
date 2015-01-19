@@ -157,7 +157,61 @@ var Layout = React.createClass({displayName: "Layout",
 module.exports = Layout;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"react":"/Users/rtorr/personal/bigboringsystem/node_modules/react/react.js","react-router":"/Users/rtorr/personal/bigboringsystem/node_modules/react-router/modules/index.js"}],"/Users/rtorr/personal/bigboringsystem/node_modules/browserify/node_modules/buffer/index.js":[function(require,module,exports){
+},{"react":"/Users/rtorr/personal/bigboringsystem/node_modules/react/react.js","react-router":"/Users/rtorr/personal/bigboringsystem/node_modules/react-router/modules/index.js"}],"/Users/rtorr/personal/bigboringsystem/components/Posts.js":[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+var Posts = React.createClass({displayName: "Posts",
+  render: function () {
+    var postNodes = this.props.data.posts.map( function( post ) {
+      return (
+        React.createElement("article", {key: post.value.created.uuid}, 
+          React.createElement("a", {className: "time", href: '/post/post!' + post.value.postid}, 
+            React.createElement("span", {dateTime: post.value.created}, post.value.created)
+          ), 
+         post.value.reply ?
+           React.createElement("p", {className: "reply"}, "in reply to: ", post.value.reply)
+           : '', 
+          React.createElement("pre", null, post.value.content)
+        )
+      );
+    });
+    return (
+      React.createElement("div", null, 
+        React.createElement("h1", null, "my posts"), 
+        React.createElement("form", {method: "post", action: "/post"}, 
+          React.createElement("label", null, 'reply links to previous posts? (space delimited)', 
+            React.createElement("input", {id: "reply-to", type: "text", name: "reply"})
+          ), 
+          React.createElement("label", null, "content", 
+            React.createElement("textarea", {rows: "10", cols: "90", name: "content", required: "true"})
+          ), 
+          React.createElement("label", null, "show replies to this post", 
+            this.props.data.user.showreplies ?
+              React.createElement("input", {type: "checkbox", name: "showreplies", defaultChecked: true})
+              :
+              React.createElement("input", {type: "checkbox", name: "showreplies"})
+          ), 
+          React.createElement("p", null, this.props.data.error ? this.props.data.error : ''), 
+          React.createElement("input", {type: "hidden", name: "crumb", value: this.props.data.crumb}), 
+          React.createElement("button", {type: "submit"}, "save")
+        ), 
+        React.createElement("div", {id: "posts"}, 
+          postNodes, 
+          React.createElement("div", {className: "pagination"}, 
+          this.props.data.next && this.props.data.lastKey ?
+            React.createElement("a", {href: '/posts?last=' + this.props.data.lastKey}, "older") : ''
+          )
+        )
+      )
+    );
+  }
+});
+
+module.exports = Posts;
+
+},{"react":"/Users/rtorr/personal/bigboringsystem/node_modules/react/react.js"}],"/Users/rtorr/personal/bigboringsystem/node_modules/browserify/node_modules/buffer/index.js":[function(require,module,exports){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -23425,11 +23479,13 @@ var Router = require('react-router');
 var Layout = require('./../../components/Layout');
 var Index = require('./../../components/Index');
 var Authenticate = require('./../../components/Authenticate');
+var Posts = require('./../../components/Posts');
 
 var routes = (
   React.createElement(Router.Route, {handler: Layout, path: "/"}, 
     React.createElement(Router.DefaultRoute, {handler: Index}), 
-    React.createElement(Router.Route, {name: "authenticate", handler: Authenticate})
+    React.createElement(Router.Route, {name: "authenticate", handler: Authenticate}), 
+    React.createElement(Router.Route, {name: "posts", handler: Posts})
   )
 );
 
@@ -23437,4 +23493,4 @@ Router.run(routes, Router.HistoryLocation, function (Handler) {
   React.render(React.createElement(Handler, null), document.getElementById('main'));
 });
 
-},{"./../../components/Authenticate":"/Users/rtorr/personal/bigboringsystem/components/Authenticate.js","./../../components/Index":"/Users/rtorr/personal/bigboringsystem/components/Index.js","./../../components/Layout":"/Users/rtorr/personal/bigboringsystem/components/Layout.js","react":"/Users/rtorr/personal/bigboringsystem/node_modules/react/react.js","react-router":"/Users/rtorr/personal/bigboringsystem/node_modules/react-router/modules/index.js"}]},{},["/Users/rtorr/personal/bigboringsystem/public/js/main.js"]);
+},{"./../../components/Authenticate":"/Users/rtorr/personal/bigboringsystem/components/Authenticate.js","./../../components/Index":"/Users/rtorr/personal/bigboringsystem/components/Index.js","./../../components/Layout":"/Users/rtorr/personal/bigboringsystem/components/Layout.js","./../../components/Posts":"/Users/rtorr/personal/bigboringsystem/components/Posts.js","react":"/Users/rtorr/personal/bigboringsystem/node_modules/react/react.js","react-router":"/Users/rtorr/personal/bigboringsystem/node_modules/react-router/modules/index.js"}]},{},["/Users/rtorr/personal/bigboringsystem/public/js/main.js"]);

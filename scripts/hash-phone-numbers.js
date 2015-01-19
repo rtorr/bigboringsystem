@@ -4,7 +4,7 @@ var concat = require('concat-stream');
 var dbs = require('../lib/db');
 var profiledb = dbs('profile');
 var utils = require('../lib/utils');
-var posts = require('../lib/posts');
+var posts = require('../lib/r_posts');
 
 var rs = profiledb.createReadStream({
   gte: 'user!',
