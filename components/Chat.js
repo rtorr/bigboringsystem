@@ -16,27 +16,25 @@ var Chat = React.createClass({
       var state = this.getStateFromStores();
       this.setState(state);
     }.bind(this));
+    var node = this.refs.chat.getDOMNode();
+    node.scrollTop = node.scrollHeight;
   },
-
   componentWillUpdate: function() {
     var node = this.refs.chat.getDOMNode();
-    this.shouldScrollBottom = (node.scrollTop + node.offsetHeight) - node.scrollHeight < 10;
+    this.shouldScrollBottom = (node.scrollTop + node.offsetHeight) - node.scrollHeight > -1;
   },
-
   componentDidUpdate: function() {
     if (this.shouldScrollBottom) {
       var node = this.refs.chat.getDOMNode();
       node.scrollTop = node.scrollHeight;
     }
   },
-
   handleSubmit: function(e){
     e.preventDefault();
     var message = this.refs.message.getDOMNode().value.trim();
     socket.emit('message', message);
     this.refs.message.getDOMNode().value = '';
   },
-
   render: function () {
     var userNodes = this.state.users.map(function (user){
       return (

@@ -20,6 +20,7 @@ var Authenticate = require('./../../components/Authenticate');
 var Posts = require('./../../components/Posts');
 var Post = require('./../../components/Post');
 var Chat = require('./../../components/Chat');
+var Discover = require('./../../components/Discover');
 
 var routes = (
   <Router.Route handler={Layout} path="/">
@@ -28,6 +29,7 @@ var routes = (
     <Router.Route name="posts" handler={Posts} />
     <Router.Route name="post" path="/post/:postId" handler={Post} />
     <Router.Route name="chat" handler={Chat} />
+    <Router.Route name="discover" handler={Discover} />
   </Router.Route>
 );
 
