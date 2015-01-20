@@ -431,6 +431,90 @@ var Posts = React.createClass({displayName: "Posts",
 module.exports = Posts;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"react":"/Users/rtorr/personal/bigboringsystem/node_modules/react/react.js"}],"/Users/rtorr/personal/bigboringsystem/components/Profile.js":[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+var Profile = React.createClass({displayName: "Profile",
+
+  render: function () {
+    console.log(this.props.data.user && this.props.data.user.name, this.props.data.user.name, this.props.data.crumb);
+    var secondaryPhoneNummberNodes = (function(number){
+      var a = []
+      for (number in this.props.data.user.secondary){
+        a.push(React.createElement("p", null, "********", number.lastTwo));
+      }
+      return a;
+    });
+    return (
+      React.createElement("div", null, 
+        React.createElement("h1", null, "profile"), 
+        React.createElement("p", null, "Your UID: ", this.props.data.user.uid), 
+        React.createElement("form", {method: "post", action: "/profile"}, 
+          this.props.data.error ? React.createElement("p", null, this.props.data.error) : '', 
+          React.createElement("label", null, "name*", 
+            React.createElement("input", {
+              type: "text", 
+              name: "name", 
+              defaultValue: this.props.data.user && this.props.data.user.name ? this.props.data.user.name : '', 
+              required: "true"})
+          ), 
+          React.createElement("label", null, "websites (space delimited)", 
+            React.createElement("input", {type: "text", name: "websites", 
+              defaultValue: this.props.data.user && this.props.data.user.websites ? this.props.data.user.websites : ''})
+          ), 
+          React.createElement("label", null, "bio", 
+            React.createElement("textarea", {rows: "5", cols: "50", name: "bio", defaultValue: this.props.data.user && this.props.data.user.bio ? this.props.data.user.bio : ''})
+          ), 
+          React.createElement("label", null, "show replies to this post", 
+            this.props.data.user.showreplies ?
+              React.createElement("input", {type: "checkbox", name: "showreplies", defaultChecked: true})
+              :
+              React.createElement("input", {type: "checkbox", name: "showreplies"})
+          ), 
+          React.createElement("input", {type: "hidden", name: "crumb", value: this.props.data.crumb}), 
+          React.createElement("button", {type: "submit"}, "save")
+        ), 
+        React.createElement("form", {method: "post", action: "/add_phone"}, 
+          React.createElement("label", null, "add a second phone number to this account", 
+            React.createElement("input", {type: "tel", name: "phone", defaultValue: this.props.data.phone})
+          ), 
+          this.props.data.phone ?
+            React.createElement("label", null, "enter the PIN sent to your secondary phone for validation", 
+              React.createElement("input", {type: "text", name: "pin"})
+            )
+            : '', 
+          React.createElement("input", {type: "hidden", name: "crumb", value: this.props.data.crumb}), 
+          React.createElement("button", {type: "submit"}, "add")
+        ), 
+        React.createElement("h2", null, "secondary numbers"), 
+        secondaryPhoneNummberNodes, 
+        React.createElement("h2", null, "export posts"), 
+        React.createElement("a", {href: "/profile/export.json"}, ".json"), " |  ", React.createElement("a", {href: "/profile/export.csv"}, ".csv"), 
+        this.props.data.op && !this.props.data.userOp ?
+          React.createElement("div", null, 
+            React.createElement("h2", {className: "delete-account"}, "Delete account"), 
+            React.createElement("p", null, "If you delete this account, all posts associated with this will be removed."), 
+            React.createElement("form", {method: "post", action: "/deleteaccount"}, 
+              React.createElement("input", {type: "hidden", name: "uid", value: this.props.data.session}), 
+              React.createElement("input", {type: "hidden", name: "crumb", value: this.props.data.crumb}), 
+              React.createElement("button", {type: "submit"}, "delete account")
+            )
+          )
+          : this.props.session ?
+            React.createElement("div", null, 
+              React.createElement("h2", {className: "delete-account"}, "Delete account"), 
+              React.createElement("p", null, "Please contact an operator to delete your account")
+            )
+          : ''
+      )
+    );
+  }
+});
+
+module.exports = Profile;
+
 },{"react":"/Users/rtorr/personal/bigboringsystem/node_modules/react/react.js"}],"/Users/rtorr/personal/bigboringsystem/flux/constants/Constants.js":[function(require,module,exports){
 'use strict';
 
@@ -31675,7 +31759,7 @@ ip.v6 = function (opts) {
 };
 
 },{}],"/Users/rtorr/personal/bigboringsystem/node_modules/url-regex/tlds.json":[function(require,module,exports){
-module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=["vermögensberatung","vermögensberater","cancerresearch","international","versicherung","construction","contractors","engineering","motorcycles","சிங்கப்பூர்","accountants","investments","enterprises","williamhill","photography","blackfriday","productions","properties","healthcare","immobilien","university","republican","consulting","technology","industries","creditcard","cuisinella","foundation","restaurant","bnpparibas","associates","management","vlaanderen","furniture","bloomberg","equipment","melbourne","financial","education","directory","solutions","allfinanz","institute","christmas","community","vacations","marketing","training","capetown","pharmacy","partners","delivery","democrat","diamonds","software","discount","السعودية","saarland","catering","airforce","mortgage","attorney","services","engineer","supplies","cleaning","property","clothing","lighting","exchange","feedback","boutique","flsmidth","brussels","plumbing","budapest","computer","builders","business","yokohama","bargains","holdings","ventures","graphics","pictures","whoswho","dentist","recipes","digital","neustar","schmidt","realtor","shiksha","domains","network","support","android","youtube","college","cologne","surgery","capital","company","caravan","இந்தியா","abogado","academy","limited","careers","spiegel","lacaixa","exposed","cooking","finance","country","fishing","fitness","flights","florist","reviews","kitchen","channel","forsale","cricket","frogans","cruises","systems","الجزائر","gallery","science","auction","organic","okinawa","hosting","holiday","website","wedding","hamburg","rentals","singles","guitars","travel","google","hiphop","global","онлайн","москва","insure","futbol","joburg","juegos","kaufen","امارات","expert","lawyer","events","london","estate","luxury","maison","الاردن","market","energy","emerck","monash","moscow","المغرب","museum","nagoya","durban","direct","dental","degree","webcam","مليسيا","voyage","dating","otsuka","gratis","credit","photos","physio","condos","coffee","clinic","quebec","claims","reisen","vision","church","repair","report","chrome","center","villas","viajes","ryukyu","career","camera","இலங்கை","schule","فلسطين","yachts","social","yandex","berlin","bayern","supply","suzuki","sydney","alsace","taipei","tattoo","agency","active","tienda","voting","globo","mango","ایران","pizza","place","سورية","poker","praxi","press","jetzt","codes","media","vodka","homes","click","miami","citic","rehab","reise","works","horse","email","భారత్","بھارت","house","cheap","koeln","world","संगठन","rocks","rodeo","glass","nexus","cards","lease","gives","ninja","build","deals","black","shoes","بازار","watch","loans","solar","wales","vegas","space","guide","autos","lotto","audio","archi","green","gifts","paris","dance","tatar","parts","gripe","actor","cymru","photo","tirol","today","tokyo","tools","gmail","trade","party","aero","ভারত","شبكة","kiwi","pics","club","pink","army","kred","casa","pohl","land","post","cash","ਭਾਰਤ","vote","prod","lgbt","prof","life","भारत","ભારત","qpon","limo","link","buzz","ලංකා","arpa","تونس","luxe","reit","cern","fail","farm","desi","blue","rest","guru","diet","rich","meet","haus","meme","menu","rsvp","ruhr","fish","help","sarl","mini","mobi","moda","work","here","scot","beer","sexy","дети","asia","camp","best","cool","sohu","name","navy","wiki","host","coop","wien","yoga","dvag","surf","сайт","immo","city","عمان","info","bike","wang","fund","zone","voto","组织机构","tips","موقع","band","care","gbiz","jobs","town","toys","gent","gift","ltda","top","tel","uno","uol","tax","soy","scb","sca","vet","rip","rio","ren","red","pub","pro","ovh","org","ooo","onl","ong","nyc","nrw","nra","wed","nhk","ngo","new","net","mov","wme","moe","mil","krd","wtc","wtf","kim","int","我爱你","ink","қаз","ing","ibm","срб","орг","tui","hiv","мкд","中文网","gov","gop","gmx","gmo","gle","укр","мон","gal","frl","foo","fly","eus","esq","edu","eat","dnp","day","dad","crs","ไทย","com","рус","ceo","みんな","cat","cal","cab","مصر","قطر","bzh","boo","新加坡","bmw","xxx","xyz","biz","bio","bid","bar","axa","zip","how","pk","pl","er","hr","pm","pn","ht","hu","es","pr","id","ie","il","im","ca","ae","in","et","ps","pt","eu","pw","py","qa","as","al","re","bf","bg","bh","bi","zw","io","iq","ir","is","it","je","at","jm","jo","fi","af","jp","cr","ro","au","ke","rs","kg","ru","kh","rw","ki","sa","bj","am","sb","sc","fj","km","kn","fk","kp","kr","sd","se","an","ag","sg","sh","kw","ky","si","kz","sj","sk","sl","sm","sn","so","la","cu","aw","fm","lb","lc","fo","cv","sr","st","su","li","cw","cx","fr","cy","cc","sv","sx","sy","lk","cz","sz","cd","bm","lr","ls","tc","td","lt","ga","tf","tg","th","lu","ax","bn","tj","tk","tl","tm","tn","to","lv","ly","ac","gb","de","gd","tp","tr","ge","cf","mc","tt","md","tv","tw","tz","ua","ug","uk","me","gf","gg","us","uy","uz","va","gh","vc","ve","gi","cg","mg","mh","vg","vi","ch","ao","gl","mk","vn","ml","mm","mn","mo","bo","vu","az","ba","br","gm","ci","aq","bs","wf","mp","mq","mr","ms","mt","mu","gn","mv","ws","mw","mx","佛山","集团","在线","한국","my","八卦","mz","公益","公司","移动","na","ck","cl","dj","nc","ne","gp","삼성","gq","商标","商城","gr","dk","dm","中信","中国","中國","nf","ng","bt","do","ni","网络","gs","香港","台湾","台灣","手机","nl","no","np","nr","gt","gu","nu","ar","nz","ad","om","ai","გე","机构","gw","gy","dz","bb","рф","ec","bd","世界","pa","网址","游戏","cm","ee","企业","eg","hk","广东","pe","pf","pg","ph","政务","hm","hn","cn","co","ye","bv","bw","by","yt","za","bz","zm","be","ma"]
+module.exports=["vermögensberatung","vermögensberater","cancerresearch","international","versicherung","construction","contractors","engineering","motorcycles","சிங்கப்பூர்","accountants","investments","enterprises","williamhill","photography","blackfriday","productions","properties","healthcare","immobilien","university","republican","consulting","technology","industries","creditcard","cuisinella","foundation","restaurant","bnpparibas","associates","management","vlaanderen","furniture","bloomberg","equipment","melbourne","financial","education","directory","solutions","allfinanz","institute","christmas","community","vacations","marketing","training","capetown","pharmacy","partners","delivery","democrat","diamonds","software","discount","السعودية","saarland","catering","airforce","mortgage","attorney","services","engineer","supplies","cleaning","property","clothing","lighting","exchange","feedback","boutique","flsmidth","brussels","plumbing","budapest","computer","builders","business","yokohama","bargains","holdings","ventures","graphics","pictures","whoswho","dentist","recipes","digital","neustar","schmidt","realtor","shiksha","domains","network","support","android","youtube","college","cologne","surgery","capital","company","caravan","இந்தியா","abogado","academy","limited","careers","spiegel","lacaixa","exposed","cooking","finance","country","fishing","fitness","flights","florist","reviews","kitchen","channel","forsale","cricket","frogans","cruises","systems","الجزائر","gallery","science","auction","organic","okinawa","hosting","holiday","website","wedding","hamburg","rentals","singles","guitars","travel","google","hiphop","global","онлайн","москва","insure","futbol","joburg","juegos","kaufen","امارات","expert","lawyer","events","london","estate","luxury","maison","الاردن","market","energy","emerck","monash","moscow","المغرب","museum","nagoya","durban","direct","dental","degree","webcam","مليسيا","voyage","dating","otsuka","gratis","credit","photos","physio","condos","coffee","clinic","quebec","claims","reisen","vision","church","repair","report","chrome","center","villas","viajes","ryukyu","career","camera","இலங்கை","schule","فلسطين","yachts","social","yandex","berlin","bayern","supply","suzuki","sydney","alsace","taipei","tattoo","agency","active","tienda","voting","globo","mango","ایران","pizza","place","سورية","poker","praxi","press","jetzt","codes","media","vodka","homes","click","miami","citic","rehab","reise","works","horse","email","భారత్","بھارت","house","cheap","koeln","world","संगठन","rocks","rodeo","glass","nexus","cards","lease","gives","ninja","build","deals","black","shoes","بازار","watch","loans","solar","wales","vegas","space","guide","autos","lotto","audio","archi","green","gifts","paris","dance","tatar","parts","gripe","actor","cymru","photo","tirol","today","tokyo","tools","gmail","trade","party","aero","ভারত","شبكة","kiwi","pics","club","pink","army","kred","casa","pohl","land","post","cash","ਭਾਰਤ","vote","prod","lgbt","prof","life","भारत","ભારત","qpon","limo","link","buzz","ලංකා","arpa","تونس","luxe","reit","cern","fail","farm","desi","blue","rest","guru","diet","rich","meet","haus","meme","menu","rsvp","ruhr","fish","help","sarl","mini","mobi","moda","work","here","scot","beer","sexy","дети","asia","camp","best","cool","sohu","name","navy","wiki","host","coop","wien","yoga","dvag","surf","сайт","immo","city","عمان","info","bike","wang","fund","zone","voto","组织机构","tips","موقع","band","care","gbiz","jobs","town","toys","gent","gift","ltda","top","tel","uno","uol","tax","soy","scb","sca","vet","rip","rio","ren","red","pub","pro","ovh","org","ooo","onl","ong","nyc","nrw","nra","wed","nhk","ngo","new","net","mov","wme","moe","mil","krd","wtc","wtf","kim","int","我爱你","ink","қаз","ing","ibm","срб","орг","tui","hiv","мкд","中文网","gov","gop","gmx","gmo","gle","укр","мон","gal","frl","foo","fly","eus","esq","edu","eat","dnp","day","dad","crs","ไทย","com","рус","ceo","みんな","cat","cal","cab","مصر","قطر","bzh","boo","新加坡","bmw","xxx","xyz","biz","bio","bid","bar","axa","zip","how","pk","pl","er","hr","pm","pn","ht","hu","es","pr","id","ie","il","im","ca","ae","in","et","ps","pt","eu","pw","py","qa","as","al","re","bf","bg","bh","bi","zw","io","iq","ir","is","it","je","at","jm","jo","fi","af","jp","cr","ro","au","ke","rs","kg","ru","kh","rw","ki","sa","bj","am","sb","sc","fj","km","kn","fk","kp","kr","sd","se","an","ag","sg","sh","kw","ky","si","kz","sj","sk","sl","sm","sn","so","la","cu","aw","fm","lb","lc","fo","cv","sr","st","su","li","cw","cx","fr","cy","cc","sv","sx","sy","lk","cz","sz","cd","bm","lr","ls","tc","td","lt","ga","tf","tg","th","lu","ax","bn","tj","tk","tl","tm","tn","to","lv","ly","ac","gb","de","gd","tp","tr","ge","cf","mc","tt","md","tv","tw","tz","ua","ug","uk","me","gf","gg","us","uy","uz","va","gh","vc","ve","gi","cg","mg","mh","vg","vi","ch","ao","gl","mk","vn","ml","mm","mn","mo","bo","vu","az","ba","br","gm","ci","aq","bs","wf","mp","mq","mr","ms","mt","mu","gn","mv","ws","mw","mx","佛山","集团","在线","한국","my","八卦","mz","公益","公司","移动","na","ck","cl","dj","nc","ne","gp","삼성","gq","商标","商城","gr","dk","dm","中信","中国","中國","nf","ng","bt","do","ni","网络","gs","香港","台湾","台灣","手机","nl","no","np","nr","gt","gu","nu","ar","nz","ad","om","ai","გე","机构","gw","gy","dz","bb","рф","ec","bd","世界","pa","网址","游戏","cm","ee","企业","eg","hk","广东","pe","pf","pg","ph","政务","hm","hn","cn","co","ye","bv","bw","by","yt","za","bz","zm","be","ma"]
 },{}],"/Users/rtorr/personal/bigboringsystem/public/js/main.js":[function(require,module,exports){
 (function (global){
 'use strict';
@@ -31702,6 +31786,7 @@ var Post = require('./../../components/Post');
 var Chat = require('./../../components/Chat');
 var Discover = require('./../../components/Discover');
 var Links = require('./../../components/Links');
+var Profile = require('./../../components/Profile');
 
 var routes = (
   React.createElement(Router.Route, {handler: Layout, path: "/"}, 
@@ -31711,7 +31796,8 @@ var routes = (
     React.createElement(Router.Route, {name: "post", path: "/post/:postId", handler: Post}), 
     React.createElement(Router.Route, {name: "chat", handler: Chat}), 
     React.createElement(Router.Route, {name: "discover", handler: Discover}), 
-    React.createElement(Router.Route, {name: "links", handler: Links})
+    React.createElement(Router.Route, {name: "links", handler: Links}), 
+    React.createElement(Router.Route, {name: "profile", handler: Profile})
   )
 );
 
@@ -31720,7 +31806,7 @@ Router.run(routes, Router.HistoryLocation, function (Handler) {
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./../../components/Authenticate":"/Users/rtorr/personal/bigboringsystem/components/Authenticate.js","./../../components/Chat":"/Users/rtorr/personal/bigboringsystem/components/Chat.js","./../../components/Discover":"/Users/rtorr/personal/bigboringsystem/components/Discover.js","./../../components/Index":"/Users/rtorr/personal/bigboringsystem/components/Index.js","./../../components/Layout":"/Users/rtorr/personal/bigboringsystem/components/Layout.js","./../../components/Links":"/Users/rtorr/personal/bigboringsystem/components/Links.js","./../../components/Post":"/Users/rtorr/personal/bigboringsystem/components/Post.js","./../../components/Posts":"/Users/rtorr/personal/bigboringsystem/components/Posts.js","./query-string":"/Users/rtorr/personal/bigboringsystem/public/js/query-string.js","react":"/Users/rtorr/personal/bigboringsystem/node_modules/react/react.js","react-router":"/Users/rtorr/personal/bigboringsystem/node_modules/react-router/modules/index.js"}],"/Users/rtorr/personal/bigboringsystem/public/js/query-string.js":[function(require,module,exports){
+},{"./../../components/Authenticate":"/Users/rtorr/personal/bigboringsystem/components/Authenticate.js","./../../components/Chat":"/Users/rtorr/personal/bigboringsystem/components/Chat.js","./../../components/Discover":"/Users/rtorr/personal/bigboringsystem/components/Discover.js","./../../components/Index":"/Users/rtorr/personal/bigboringsystem/components/Index.js","./../../components/Layout":"/Users/rtorr/personal/bigboringsystem/components/Layout.js","./../../components/Links":"/Users/rtorr/personal/bigboringsystem/components/Links.js","./../../components/Post":"/Users/rtorr/personal/bigboringsystem/components/Post.js","./../../components/Posts":"/Users/rtorr/personal/bigboringsystem/components/Posts.js","./../../components/Profile":"/Users/rtorr/personal/bigboringsystem/components/Profile.js","./query-string":"/Users/rtorr/personal/bigboringsystem/public/js/query-string.js","react":"/Users/rtorr/personal/bigboringsystem/node_modules/react/react.js","react-router":"/Users/rtorr/personal/bigboringsystem/node_modules/react-router/modules/index.js"}],"/Users/rtorr/personal/bigboringsystem/public/js/query-string.js":[function(require,module,exports){
 /*!
 	query-string
 	Parse and stringify URL query strings
