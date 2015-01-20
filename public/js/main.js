@@ -21,6 +21,7 @@ var Posts = require('./../../components/Posts');
 var Post = require('./../../components/Post');
 var Chat = require('./../../components/Chat');
 var Discover = require('./../../components/Discover');
+var Links = require('./../../components/Links');
 
 var routes = (
   <Router.Route handler={Layout} path="/">
@@ -30,6 +31,7 @@ var routes = (
     <Router.Route name="post" path="/post/:postId" handler={Post} />
     <Router.Route name="chat" handler={Chat} />
     <Router.Route name="discover" handler={Discover} />
+    <Router.Route name="links" handler={Links} />
   </Router.Route>
 );
 
